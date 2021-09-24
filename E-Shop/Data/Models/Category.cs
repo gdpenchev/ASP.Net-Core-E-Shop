@@ -11,6 +11,6 @@ namespace E_Shop.Data.Models
 
         public string Name { get; set; }
 
-        public List<Shirt> Shirts { get; set; }
+        public IEnumerable<Shirt> Shirts { get; set; } = new List<Shirt>();
     }
 }

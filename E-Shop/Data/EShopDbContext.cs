@@ -14,11 +14,11 @@ namespace E_Shop.Data
         {
         }
 
-        public DbSet<Shirt> Shirts;
+        public DbSet<Shirt> Shirts { get; init; }
 
-        public DbSet<Gift> Gifts;
+        public DbSet<Gift> Gifts { get; init; }
 
-        public DbSet<Category> Categories;
+        public DbSet<Category> Categories { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

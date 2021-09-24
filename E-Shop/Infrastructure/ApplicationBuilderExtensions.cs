@@ -1,4 +1,5 @@
 ﻿using E_Shop.Data;
+using E_Shop.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,25 @@ namespace E_Shop.Infrastructure
 
             data.Database.Migrate();
 
+            SeedCategories(data);
+
             return app;
+        }
+
+        private static void SeedCategories(EShopDbContext data)
+        {
+            if (data.Categories.Any())
+            {
+                return;
+            }
+
+            data.Categories.AddRange(new[]
+            {
+                new Category{Name = "T-Shirt"},
+                new Category{Name = "Hoodie"},
+                new Category{Name = "Sweatshirt"}
+            });
+            data.SaveChanges();
         }
     }
 }
