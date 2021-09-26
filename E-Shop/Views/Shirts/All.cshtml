@@ -1,0 +1,21 @@
+﻿@model AllShirtsModel 
+
+
+@if(!Model.Shirts.Any())
+{
+    <h2 class="text-center">Nothing to display...</h2>
+}
+<div class="row">
+    @foreach(var shirt in Model.Shirts)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img class="card-img-top" src="@shirt.ImageUrl" alt="@shirt.Name @shirt.Model - @shirt.Price (@shirt.Category)">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@shirt.Name @shirt.Model @shirt.Price (@shirt.Category)</h5>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
