@@ -22,6 +22,11 @@
 
             var shirtsListQuery = this.data.Shirts.AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(query.Model))
+            {
+                shirtsListQuery = shirtsListQuery.Where(s => s.Model == query.Model);
+            }
+
             var shirts = shirtsListQuery.Select(s => new ShirtListingViewModel
             {
                 Id = s.Id,

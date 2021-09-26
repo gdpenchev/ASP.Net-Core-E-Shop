@@ -1,4 +1,6 @@
-﻿using E_Shop.Models;
+﻿using E_Shop.Data;
+using E_Shop.Models;
+using E_Shop.Models.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,8 +14,32 @@ namespace E_Shop.Controllers
     public class HomeController : Controller
     {
 
+        private readonly EShopDbContext data;
 
-        public IActionResult Index() => View();
+        public HomeController(EShopDbContext data)
+        {
+            this.data = data;
+        }
+        public IActionResult Index()
+        {
+
+            var shirts = data.Shirts
+                .OrderByDescending(s => s.Id)
+                .Select(s => new ShirtIndexViewModel
+                {
+                    Name = s.Name,
+                    Model = s.Model,
+                    Size = s.Size,
+                    ImageUrl = s.ImageUrl
+                }).Take(5)
+                .ToList();
+
+
+            return View(new IndexViewModel
+            {
+                Shirts = shirts
+            });
+        }
 
       
 

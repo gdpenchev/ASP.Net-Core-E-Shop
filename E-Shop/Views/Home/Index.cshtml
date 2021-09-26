@@ -1,6 +1,22 @@
-﻿
+﻿@model IndexViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+@if (!Model.Shirts.Any())
+{
+
+}
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@Model.Shirts[0].ImageUrl" alt="Card image cap">
+    <p class="text-center">
+        <button class="btn btn-primary text-center" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            View More
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body text-center">
+            @Model.Shirts[0].Name
+            @Model.Shirts[0].Model
+            @Model.Shirts[0].Size
+        </div>
+    </div>
 </div>
