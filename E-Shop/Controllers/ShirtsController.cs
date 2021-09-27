@@ -17,17 +17,33 @@
             this.data = data;
         }
 
-        public IActionResult All(AllShirtsModel query)
+        public IActionResult All([FromQuery]AllShirtsModel query)
         {
 
             var shirtsListQuery = this.data.Shirts.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(query.Model))
+            if (!string.IsNullOrWhiteSpace(query.Cateogory))
             {
-                shirtsListQuery = shirtsListQuery.Where(s => s.Model == query.Model);
+                shirtsListQuery = shirtsListQuery.Where(s => s.Category.Name == query.Cateogory);
             }
 
-            var shirts = shirtsListQuery.Select(s => new ShirtListingViewModel
+            if (!string.IsNullOrWhiteSpace(query.Size))
+            {
+                shirtsListQuery = shirtsListQuery.Where(s => s.Size == query.Size);
+            }
+
+            if (!string.IsNullOrEmpty(query.SearchByText))
+            {
+                shirtsListQuery = shirtsListQuery.Where(c =>
+                (c.Name + " " + c.Model).ToLower().Contains(query.SearchByText.ToLower()) ||
+                (c.Name + " " + c.Size).ToLower().Contains(query.SearchByText.ToLower()));
+            }
+
+            var shirts = shirtsListQuery
+                .Skip((query.CurrentPage - 1) * AllShirtsModel.ShirtPerPage)
+                .Take(AllShirtsModel.ShirtPerPage)
+                .OrderByDescending(c=>c.Id)
+                .Select(s => new ShirtListingViewModel
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -38,10 +54,30 @@
                 Category = s.Category.Name
             }).ToList();
 
+            var shirtSizes = this.data
+                .Shirts
+                .Select(s => s.Size)
+                .OrderBy(s => s)
+                .Distinct()
+                .ToList();
+            var shirtCategories = this.data
+                .Shirts
+                .Select(s => s.Category.Name)
+                .OrderBy(s => s)
+                .Distinct()
+                .ToList();
+
+            var totalShirts = shirtsListQuery.Count();
+
+            query.TotalShirts = totalShirts;
+            query.Sizes = shirtSizes;
+            query.Categories = shirtCategories;
             query.Shirts = shirts;
+
             return View(query);
         }
 
+       
         public IActionResult Add() => View(new AddShirtFormModel
         {
             Categories = this.GetShirtCategories()
