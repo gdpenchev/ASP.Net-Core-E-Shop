@@ -4,7 +4,6 @@
     using E_Shop.Data.Models;
     using E_Shop.Models.Shirts;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -86,39 +85,30 @@
         [HttpPost]
         public IActionResult Add(AddShirtFormModel shirt)
         {
-            //if (!this.data.Categories.Any(c=>c.Id == shirt.CategoryId))
-            //{
-            //    this.ModelState.AddModelError(nameof(shirt.CategoryId), "Category does not exist.");
-            //}
-            //if (!ModelState.IsValid)
-            //{
-            //    shirt.Categories = this.GetShirtCategories();
-            //    return View(shirt);
-            //}
 
-            //if (!this.data.MasterShirts.Any(m=>m.Name == shirt.Name))
-            //{
-                
-            //    var newMasterShirt = new MasterShirt
-            //    {
-            //        Name = shirt.Name,
-            //    };
-                
-                
-            //}
-            //var newShirt = new Shirt
-            //{
+            if (!this.data.MasterShirts.Any(ms=>ms.Id == shirt.MasterShirtId))
+            {
+                this.ModelState.AddModelError(nameof(shirt.MasterShirtId), "item does not exist.")
+            }
+            if (shirt.Quantity <= 0)
+            {
+                this.ModelState.AddModelError(nameof(shirt.MasterShirtId), "quantity must be at least 1");
+            }
+            if (!ModelState.IsValid)
+            {
+                shirt.MasterShirts = this.GetMasterShirts();
+                return View(shirt);
+            }
+            var newShirt = new Shirt
+            {
+                Price = shirt.Price,
+                Quantity = shirt.Quantity,
+                Size = shirt.Size,
+                MasterShirtId = shirt.MasterShirtId,
+            };
 
-            //    Quantity = shirt.Quantity,
-            //    Description = shirt.Description,
-            //    Price = shirt.Price,
-            //    ImageUrl = shirt.ImageUrl,
-            //    Size = shirt.Size,
-            //    CategoryId = shirt.CategoryId
-            //};
-            //var ms = this.data.MasterShirts.Select(ms => ms.Name == shirt.Name).FirstOrDefault();
-            //data.Shirts.Add(newShirt);
-
+            
+            data.Shirts.Add(newShirt);
             data.SaveChanges();
             return RedirectToAction("Index", "Home");
         }

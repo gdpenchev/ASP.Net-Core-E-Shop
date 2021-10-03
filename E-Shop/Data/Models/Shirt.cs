@@ -1,7 +1,6 @@
 ﻿namespace E_Shop.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using static Data.DataConstants;
     public class Shirt
     {
         public int Id { get; init; }

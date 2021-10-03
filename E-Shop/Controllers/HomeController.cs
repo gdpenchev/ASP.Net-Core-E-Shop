@@ -1,16 +1,11 @@
-﻿using E_Shop.Data;
-using E_Shop.Models;
-using E_Shop.Models.Home;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace E_Shop.Controllers
+﻿namespace E_Shop.Controllers
 {
+    using E_Shop.Data;
+    using E_Shop.Models;
+    using E_Shop.Models.Home;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Diagnostics;
+    using System.Linq;
     public class HomeController : Controller
     {
 
