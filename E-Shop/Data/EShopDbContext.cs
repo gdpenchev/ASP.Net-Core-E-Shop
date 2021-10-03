@@ -16,18 +16,24 @@ namespace E_Shop.Data
 
         public DbSet<Shirt> Shirts { get; init; }
 
-        public DbSet<Gift> Gifts { get; init; }
-
         public DbSet<Category> Categories { get; init; }
+
+        public DbSet<MasterShirt> MasterShirts { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
             builder.Entity<Shirt>()
-                .HasOne(s => s.Category)
-                .WithMany(c => c.Shirts)
-                .HasForeignKey(s => s.CategoryId)
+                .HasOne(s => s.MasterShirt)
+                .WithMany(ms => ms.Shirts)
+                .HasForeignKey(s => s.MasterShirtId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<MasterShirt>()
+                .HasOne(ms => ms.Category)
+                .WithMany(c => c.MasterShirts)
+                .HasForeignKey(ms => ms.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

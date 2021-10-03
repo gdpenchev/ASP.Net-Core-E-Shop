@@ -4,14 +4,16 @@ using E_Shop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace E_Shop.Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211003085211_MasterShirtClass")]
+    partial class MasterShirtClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,26 +43,12 @@ namespace E_Shop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("MasterShirts");
                 });
@@ -71,6 +59,18 @@ namespace E_Shop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MasterShirtId")
                         .HasColumnType("int");
@@ -86,6 +86,8 @@ namespace E_Shop.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("MasterShirtId");
 
@@ -292,24 +294,21 @@ namespace E_Shop.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("E_Shop.Data.Models.MasterShirt", b =>
+            modelBuilder.Entity("E_Shop.Data.Models.Shirt", b =>
                 {
                     b.HasOne("E_Shop.Data.Models.Category", "Category")
-                        .WithMany("MasterShirts")
+                        .WithMany("Shirts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("E_Shop.Data.Models.Shirt", b =>
-                {
                     b.HasOne("E_Shop.Data.Models.MasterShirt", "MasterShirt")
                         .WithMany("Shirts")
                         .HasForeignKey("MasterShirtId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("MasterShirt");
                 });
@@ -367,7 +366,7 @@ namespace E_Shop.Data.Migrations
 
             modelBuilder.Entity("E_Shop.Data.Models.Category", b =>
                 {
-                    b.Navigation("MasterShirts");
+                    b.Navigation("Shirts");
                 });
 
             modelBuilder.Entity("E_Shop.Data.Models.MasterShirt", b =>

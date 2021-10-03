@@ -6,25 +6,15 @@
     public class AddShirtFormModel
     {
         [Required]
-        [MaxLength(MaxNameModelLength)]
-        public string Name { get; set; }
-        [Required]
-        [MaxLength(MaxNameModelLength)]
-        public string Model { get; set; }
-        [Required]
-        [MaxLength(MaxDescriptionLength)]
-        public string Description { get; set; }
+        [Range(minRange,maxRange,ErrorMessage = "The range must be between {1} and {2}")]
+        public int Quantity { get; set; }
         [Required]
         public decimal Price { get; set; }
         [Required]
         public string Size { get; set; }
-        [Display(Name = "Image URL")]
-        [Required]
-        [Url]
-        public string ImageUrl { get; init; }
-        [Display(Name = "Category")]
-        public int CategoryId { get; init; }
 
-        public IEnumerable<ShirtCategoryViewModel> Categories { get; set; } = new List<ShirtCategoryViewModel>();
+        public int MasterShirtId { get; init; }
+
+        public IEnumerable<ShirtMasterShirtViewModel> MasterShirts { get; set; } = new List<ShirtMasterShirtViewModel>();
     }
 }

@@ -5,24 +5,17 @@
     public class Shirt
     {
         public int Id { get; init; }
+        
         [Required]
-        [MaxLength(MaxNameModelLength)]
-        public string Name { get; set; }
-        [Required]
-        [MaxLength(MaxNameModelLength)]
-        public string Model { get; set; }
-        [Required]
-        [MaxLength(MaxDescriptionLength)]
-        public string Description { get; set; }
+        public int Quantity { get; set; }
+        
         [Required]
         public decimal Price { get; set; }
         [Required]
         public string Size { get; set; }
-        [Required]
-        public string ImageUrl { get; set; }
 
-        public int CategoryId { get; set; }
+        public int MasterShirtId { get; set; }
 
-        public Category Category { get; set; }
+        public MasterShirt MasterShirt { get; set; }
     }
 }

@@ -20,59 +20,59 @@
         public IActionResult All([FromQuery]AllShirtsModel query)
         {
 
-            var shirtsListQuery = this.data.Shirts.AsQueryable();
+            //var shirtsListQuery = this.data.Shirts.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(query.Cateogory))
-            {
-                shirtsListQuery = shirtsListQuery.Where(s => s.Category.Name == query.Cateogory);
-            }
+            //if (!string.IsNullOrWhiteSpace(query.Cateogory))
+            //{
+            //    shirtsListQuery = shirtsListQuery.Where(s => s.Category.Name == query.Cateogory);
+            //}
 
-            if (!string.IsNullOrWhiteSpace(query.Size))
-            {
-                shirtsListQuery = shirtsListQuery.Where(s => s.Size == query.Size);
-            }
+            //if (!string.IsNullOrWhiteSpace(query.Size))
+            //{
+            //    shirtsListQuery = shirtsListQuery.Where(s => s.Size == query.Size);
+            //}
 
-            if (!string.IsNullOrEmpty(query.SearchByText))
-            {
-                shirtsListQuery = shirtsListQuery.Where(c =>
-                (c.Name + " " + c.Model).ToLower().Contains(query.SearchByText.ToLower()) ||
-                (c.Name + " " + c.Size).ToLower().Contains(query.SearchByText.ToLower()));
-            }
+            //if (!string.IsNullOrEmpty(query.SearchByText))
+            //{
+            //    shirtsListQuery = shirtsListQuery.Where(c =>
+            //    (c.Name + " " + c.Model).ToLower().Contains(query.SearchByText.ToLower()) ||
+            //    (c.Name + " " + c.Size).ToLower().Contains(query.SearchByText.ToLower()));
+            //}
 
-            var shirts = shirtsListQuery
-                .Skip((query.CurrentPage - 1) * AllShirtsModel.ShirtPerPage)
-                .Take(AllShirtsModel.ShirtPerPage)
-                .OrderByDescending(c=>c.Id)
-                .Select(s => new ShirtListingViewModel
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Model = s.Model,
-                ImageUrl = s.ImageUrl,
-                Price = s.Price,
-                Size = s.Size,
-                Category = s.Category.Name
-            }).ToList();
+            //var shirts = shirtsListQuery
+            //    .Skip((query.CurrentPage - 1) * AllShirtsModel.ShirtPerPage)
+            //    .Take(AllShirtsModel.ShirtPerPage)
+            //    .OrderByDescending(c=>c.Id)
+            //    .Select(s => new ShirtListingViewModel
+            //{
+            //    Id = s.Id,
+            //    Name = s.Name,
+            //    Model = s.Model,
+            //    ImageUrl = s.ImageUrl,
+            //    Price = s.Price,
+            //    Size = s.Size,
+            //    Category = s.Category.Name
+            //}).ToList();
 
-            var shirtSizes = this.data
-                .Shirts
-                .Select(s => s.Size)
-                .OrderBy(s => s)
-                .Distinct()
-                .ToList();
-            var shirtCategories = this.data
-                .Shirts
-                .Select(s => s.Category.Name)
-                .OrderBy(s => s)
-                .Distinct()
-                .ToList();
+            //var shirtSizes = this.data
+            //    .Shirts
+            //    .Select(s => s.Size)
+            //    .OrderBy(s => s)
+            //    .Distinct()
+            //    .ToList();
+            //var shirtCategories = this.data
+            //    .Shirts
+            //    .Select(s => s.Category.Name)
+            //    .OrderBy(s => s)
+            //    .Distinct()
+            //    .ToList();
 
-            var totalShirts = shirtsListQuery.Count();
+            //var totalShirts = shirtsListQuery.Count();
 
-            query.TotalShirts = totalShirts;
-            query.Sizes = shirtSizes;
-            query.Categories = shirtCategories;
-            query.Shirts = shirts;
+            //query.TotalShirts = totalShirts;
+            //query.Sizes = shirtSizes;
+            //query.Categories = shirtCategories;
+            ////query.Shirts = shirts;
 
             return View(query);
         }
@@ -80,34 +80,45 @@
        
         public IActionResult Add() => View(new AddShirtFormModel
         {
-            Categories = this.GetShirtCategories()
+            MasterShirts = this.GetMasterShirts()
         });
 
         [HttpPost]
         public IActionResult Add(AddShirtFormModel shirt)
         {
-            if (!this.data.Categories.Any(c=>c.Id == shirt.CategoryId))
-            {
-                this.ModelState.AddModelError(nameof(shirt.CategoryId), "Category does not exist.");
-            }
-            if (!ModelState.IsValid)
-            {
-                shirt.Categories = this.GetShirtCategories();
-                return View(shirt);
-            }
+            //if (!this.data.Categories.Any(c=>c.Id == shirt.CategoryId))
+            //{
+            //    this.ModelState.AddModelError(nameof(shirt.CategoryId), "Category does not exist.");
+            //}
+            //if (!ModelState.IsValid)
+            //{
+            //    shirt.Categories = this.GetShirtCategories();
+            //    return View(shirt);
+            //}
 
-            var newShirt = new Shirt
-            {
-                Name = shirt.Name,
-                Model = shirt.Model,
-                Description = shirt.Description,
-                Price = shirt.Price,
-                ImageUrl = shirt.ImageUrl,
-                Size = shirt.Size,
-                CategoryId = shirt.CategoryId
-            };
+            //if (!this.data.MasterShirts.Any(m=>m.Name == shirt.Name))
+            //{
+                
+            //    var newMasterShirt = new MasterShirt
+            //    {
+            //        Name = shirt.Name,
+            //    };
+                
+                
+            //}
+            //var newShirt = new Shirt
+            //{
 
-            data.Shirts.Add(newShirt);
+            //    Quantity = shirt.Quantity,
+            //    Description = shirt.Description,
+            //    Price = shirt.Price,
+            //    ImageUrl = shirt.ImageUrl,
+            //    Size = shirt.Size,
+            //    CategoryId = shirt.CategoryId
+            //};
+            //var ms = this.data.MasterShirts.Select(ms => ms.Name == shirt.Name).FirstOrDefault();
+            //data.Shirts.Add(newShirt);
+
             data.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
@@ -120,6 +131,13 @@
                 Name = c.Name
             }).ToList();
 
-
+        private IEnumerable<ShirtMasterShirtViewModel> GetMasterShirts()
+            => this.data
+            .MasterShirts
+            .Select(ms => new ShirtMasterShirtViewModel
+            {
+                Id = ms.Id,
+                Name = ms.Name
+            }).ToList();
     }
 }

@@ -23,18 +23,31 @@ namespace E_Shop.Controllers
         public IActionResult Index()
         {
 
-            var shirts = data.Shirts
-                .OrderByDescending(s => s.Id)
-                .Select(s => new ShirtIndexViewModel
+            //var shirts = data.Shirts
+            //    .OrderByDescending(s => s.Id)
+            //    .Select(s => new ShirtIndexViewModel
+            //    {
+            //        //Name = s.Name,
+            //        //Model = s.Model,
+            //        Size = s.Size,
+            //        ImageUrl = s.ImageUrl
+            //    }).Take(5)
+            //    .ToList();
+
+
+            //return View(new IndexViewModel
+            //{
+            //    Shirts = shirts
+            //});
+
+            var shirts = data.MasterShirts
+                .OrderByDescending(ms => ms.Id)
+                .Select(ms => new ShirtIndexViewModel
                 {
-                    Name = s.Name,
-                    Model = s.Model,
-                    Size = s.Size,
-                    ImageUrl = s.ImageUrl
-                }).Take(5)
+                    Name = ms.Name,
+                    ImageUrl = ms.ImageURL
+                })
                 .ToList();
-
-
             return View(new IndexViewModel
             {
                 Shirts = shirts
