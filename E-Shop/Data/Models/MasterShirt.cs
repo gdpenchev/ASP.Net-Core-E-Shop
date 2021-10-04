@@ -19,6 +19,6 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
-        public IEnumerable<Shirt> Shirts { get; init; } = new List<Shirt>();
+        public List<Shirt> Shirts { get; init; } = new List<Shirt>();
     }
 }

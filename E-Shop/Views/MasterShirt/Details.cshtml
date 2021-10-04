@@ -1,0 +1,19 @@
+﻿@model DetailsMasterShirtViewModel
+
+<div class="row">
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">@Model.Name</li>
+                @foreach (var shirt in Model.Shirts)
+                {
+                    <li class="list-group-item">@shirt.Size - @shirt.Quantity - @shirt.Price</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">
+        </div>
+    </div>
+
+</div>

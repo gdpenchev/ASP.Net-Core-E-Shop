@@ -3,6 +3,7 @@
     using E_Shop.Data;
     using E_Shop.Data.Models;
     using E_Shop.Models.MasterShirt;
+    using E_Shop.Models.Shirts;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -46,6 +47,100 @@
             this.data.MasterShirts.Add(newMasterShirt);
             this.data.SaveChanges();
             return RedirectToAction("Add", "Shirts");
+        }
+
+        public IActionResult All([FromQuery] AllMasterShirtsModel query)
+        {
+
+            var shirtsListQuery = this.data.MasterShirts.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Cateogory))
+            {
+                shirtsListQuery = shirtsListQuery.Where(s => s.Category.Name == query.Cateogory);
+            }
+            if (!string.IsNullOrWhiteSpace(query.SearchByText))
+            {
+                shirtsListQuery = shirtsListQuery.Where(ms =>
+                (ms.Name + " " + ms.Category.Name).ToLower().Contains(query.SearchByText.ToLower()));
+            }
+
+            //if (!string.IsNullOrWhiteSpace(query.Size))
+            //{
+            //    shirtsListQuery = shirtsListQuery.Where(s => s.Size == query.Size);
+            //}
+            
+            //if (!string.IsNullOrEmpty(query.SearchByText))
+            //{
+            //    shirtsListQuery = shirtsListQuery.Where(c =>
+            //    (c.Name + " " + c.Model).ToLower().Contains(query.SearchByText.ToLower()) ||
+            //    (c.Name + " " + c.Size).ToLower().Contains(query.SearchByText.ToLower()));
+            //}
+            var masterShirts = shirtsListQuery
+                .Skip((query.CurrentPage - 1) * AllMasterShirtsModel.MasterShirtPerPage)
+                .Take(AllMasterShirtsModel.MasterShirtPerPage)
+                .OrderByDescending(ms => ms.Id)
+                .Select(ms => new MasterShirtListingViewModel
+                {
+                    Id = ms.Id,
+                    Name = ms.Name,
+                    Description = ms.Description,
+                    ImageUrl = ms.ImageURL,
+                    Category = ms.Category.Name
+                }).ToList();
+
+            var masterShirtsCategories = this.data
+                .MasterShirts
+                .Select(ms => ms.Category.Name)
+                .OrderBy(ms => ms)
+                .Distinct()
+                .ToList();
+
+            //var shirts = shirtsListQuery
+            //    .Skip((query.CurrentPage - 1) * AllShirtsModel.ShirtPerPage)
+            //    .Take(AllShirtsModel.ShirtPerPage)
+            //    .OrderByDescending(c=>c.Id)
+            //    .Select(s => new ShirtListingViewModel
+            //{
+            //    Id = s.Id,
+            //    Name = s.Name,
+            //    Model = s.Model,
+            //    ImageUrl = s.ImageUrl,
+            //    Price = s.Price,
+            //    Size = s.Size,
+            //    Category = s.Category.Name
+            //}).ToList();
+
+            var totalMasterShirts = shirtsListQuery.Count();
+
+            query.TotalMasterShirts = totalMasterShirts;
+            query.Categories = masterShirtsCategories;
+            query.MasterShirts = masterShirts;
+
+
+            return View(query);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var masterShirt = this.data.MasterShirts.Where(ms => ms.Id == id).FirstOrDefault();
+
+            if (masterShirt == null)
+            {
+                return BadRequest();
+            }
+
+            var shirts = this.data.Shirts
+                .Where(s => s.MasterShirtId == id)
+                .OrderByDescending(s => s)
+                .ToList();
+
+            return View(new DetailsMasterShirtViewModel
+            {
+                Id = masterShirt.Id,
+                Name = masterShirt.Name,
+                ImageUrl = masterShirt.ImageURL,
+                Shirts = shirts
+            });
         }
 
         private IEnumerable<MasterShirtCategoryViewModel> GetShirtCategories()
