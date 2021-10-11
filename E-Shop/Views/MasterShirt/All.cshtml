@@ -47,7 +47,7 @@
     var lastPage = Math.Ceiling((double)Model.TotalMasterShirts / AllMasterShirtsModel.MasterShirtPerPage);
 }
 
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-6">
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-controller="Shirts"
@@ -57,9 +57,11 @@
            asp-route-masterShirt="@Model.MasterShirt"
            asp-route-searchByText="@Model.SearchByText">Previous</a>
     </div>
-    @{ var shouldBeDisabled = Model.CurrentPage == lastPage || !Model.MasterShirts.Any(); }
+    @{ 
+        var shouldBeDisabled = Model.CurrentPage == lastPage || !Model.MasterShirts.Any(); 
+    }
     <div class="col-md-6">
-        <a class="btn btn-danger float-right @(shouldBeDisabled ? "disabled" : string.Empty)"
+        <a class="btn btn-danger float-sm-right @(shouldBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px
            asp-controller="Shirts"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"

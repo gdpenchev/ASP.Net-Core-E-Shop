@@ -176,6 +176,19 @@
 
             return RedirectToAction("All");
         }
+        public IActionResult Delete(int id)
+        {
+            var masterShirtData = this.data.MasterShirts.FirstOrDefault(ms => ms.Id == id);
+            var shirtList = this.data.Shirts.Where(s => s.MasterShirtId == id).ToList();
+            if (masterShirtData == null)
+            {
+                return BadRequest();
+            }
+            this.data.Shirts.RemoveRange(shirtList);
+            this.data.MasterShirts.Remove(masterShirtData);
+            this.data.SaveChanges();
+            return RedirectToAction("All");
+        }
 
         private IEnumerable<MasterShirtCategoryViewModel> GetShirtCategories()
            => this.data
