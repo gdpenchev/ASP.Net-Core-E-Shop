@@ -142,6 +142,40 @@
                 Shirts = shirts
             });
         }
+        public IActionResult Edit(int id)
+        {
+            var masterShirt = this.data.MasterShirts.Where(ms => ms.Id == id).FirstOrDefault();
+
+            if (masterShirt == null)
+            {
+                return BadRequest();
+            }
+
+            return View(new AddMasterShirtFormModel
+            {
+                Name = masterShirt.Name,
+                Description = masterShirt.Description,
+                ImageURL = masterShirt.ImageURL,
+                Categories = GetShirtCategories()
+            });
+            
+
+        }
+        [HttpPost]
+        public IActionResult Edit(int id, AddMasterShirtFormModel updatedMasterShirt)
+        {
+            
+            var masterShirtData = this.data.MasterShirts.Find(id);
+
+            masterShirtData.Name = updatedMasterShirt.Name;
+            masterShirtData.Description = updatedMasterShirt.Description;
+            masterShirtData.ImageURL = updatedMasterShirt.ImageURL;
+            masterShirtData.CategoryId = updatedMasterShirt.CategoryId;
+
+            this.data.SaveChanges();
+
+            return RedirectToAction("All");
+        }
 
         private IEnumerable<MasterShirtCategoryViewModel> GetShirtCategories()
            => this.data
