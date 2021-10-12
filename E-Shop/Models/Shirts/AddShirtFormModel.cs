@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using static Data.DataConstants;
+    using static Data.DataConstants.Shirt;
     public class AddShirtFormModel
     {
         [Required]

@@ -5,7 +5,7 @@ namespace E_Shop.Data
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class EShopDbContext : IdentityDbContext
+    public class EShopDbContext : IdentityDbContext<User>
     {
         public EShopDbContext(DbContextOptions<EShopDbContext> options)
             : base(options)

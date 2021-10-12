@@ -27,7 +27,6 @@
             {
                 this.ModelState.AddModelError(nameof(masterShirt.CategoryId), "does not exists");
             }
-            
             if (this.data.MasterShirts.Any(ms => ms.Name == masterShirt.Name))
             {
                 this.ModelState.AddModelError(nameof(masterShirt.Name), "already exists");
