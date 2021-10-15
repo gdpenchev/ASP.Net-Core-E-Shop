@@ -4,12 +4,12 @@
     ViewData["Title"] = "All Goods";
 }
 
-<form method="get">
+<form method="get" id="formId">
     <div class="row">
         <div class="form-group col-md-4">
             <div class="form-group">
                 <label asp-for="MasterShirt"></label>
-                <select asp-for="MasterShirt" class="form-control">
+                <select asp-for="MasterShirt" class="form-control" onchange="this.form.submit()">
                     <option value="">All</option>
                     @foreach (var ms in Model.MasterShirts)
                     {
@@ -21,12 +21,12 @@
 
         <div class="form-group col-md-4">
             <div class="form-group">
-                <label asp-for="Cateogory"></label>
-                <select asp-for="Cateogory" class="form-control">
+                <label asp-for="Category"></label>
+                <select asp-for="Category" class="form-control" onchange="this.form.submit()">
                     <option value="">All</option>
                     @foreach (var category in Model.Categories)
                     {
-        <option>@category</option>}
+                        <option>@category</option>}
                 </select>
             </div>
         </div>
@@ -52,7 +52,7 @@
            asp-controller="MasterShirt"
            asp-action="All"
            asp-route-currentPage="@previousPage"
-           asp-route-category="@Model.Cateogory"
+           asp-route-category="@Model.Category"
            asp-route-masterShirt="@Model.MasterShirt"
            asp-route-searchByText="@Model.SearchByText">Previous</a>
     </div>
@@ -64,20 +64,37 @@
            asp-controller="MasterShirt"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-category="@Model.Cateogory"
+           asp-route-category="@Model.Category"
            asp-route-masterShirt="@Model.MasterShirt"
            asp-route-searchbyText="@Model.SearchByText">Next</a>
     </div>
 </div>
 
+<script>
+    $("form").on("submit", function (e) {
+        var dataString = $(this).serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/MasterShirt/All",
+            data: dataString,
+            success: function (res) {
+                console.log(res);
+            }
+        });
+
+        e.preventDefault();
+    });
+</script>
+
 <div class="container">
     <div class="row">
         @if (!Model.MasterShirts.Any())
         {
-<h2 class="text-center">
-    Nothing to display...
-
-</h2>}
+            <h2 class="text-center">
+                Nothing to display...
+            </h2>
+         }
         @foreach (var shirt in Model.MasterShirts)
         {
 <div class="col-md-4">
@@ -87,8 +104,12 @@
             <h5 class="card-title text-center">@shirt.Name (@shirt.Category)</h5>
             <p class="card-text">@shirt.Description</p>
             <a asp-controller="MasterShirt" asp-action="Details" asp-route-id="@shirt.Id" class="btn btn-primary float-center">View More</a>
-            <a asp-controller="MasterShirt" asp-action="Edit" asp-route-id="@shirt.Id" class="btn btn-warning float-center">Edit</a>
-            <a asp-controller="MasterShirt" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger float-center">Delete</a>
+            @if (User.IsAdmin())
+            {
+                <a asp-controller="MasterShirt" asp-action="Edit" asp-route-id="@shirt.Id" class="btn btn-warning float-center">Edit</a>
+                <a asp-controller="MasterShirt" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger float-center">Delete</a>
+            }
+
         </div>
     </div>
 </div>

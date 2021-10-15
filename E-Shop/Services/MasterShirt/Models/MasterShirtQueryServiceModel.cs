@@ -1,17 +1,12 @@
-﻿using E_Shop.Services.MasterShirt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace E_Shop.Models.Shirts
+﻿namespace E_Shop.Services.MasterShirt
 {
-    public class AllMasterShirtsModel
+    using System.Collections.Generic;
+    public class MasterShirtQueryServiceModel
     {
         public const int MasterShirtPerPage = 3;
 
         public int CurrentPage { get; init; } = 1;
-        public string Category { get; init; }
+        public string Cateogory { get; init; }
         public IEnumerable<string> Categories { get; set; }
 
         public int TotalMasterShirts { get; set; }
@@ -21,6 +16,5 @@ namespace E_Shop.Models.Shirts
         public string MasterShirt { get; init; }
 
         public IEnumerable<MasterShirtServiceListingModel> MasterShirts { get; set; }
-
     }
 }

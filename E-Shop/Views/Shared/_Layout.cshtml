@@ -18,12 +18,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MasterShirt" asp-action="Add">Add Master Shirt</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Shirts" asp-action="Add">Add Shirt</a>
-                        </li>
+                        @if (User.IsAdmin())
+                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="MasterShirt" asp-action="Add">Add Master Shirt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Shirts" asp-action="Add">Add Shirt</a>
+                            </li>
+                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MasterShirt" asp-action="All">All Shirt</a>
                         </li>

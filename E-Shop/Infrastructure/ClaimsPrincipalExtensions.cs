@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace E_Shop.Infrastructure
+﻿namespace E_Shop.Infrastructure
 {
-    public class ClaimsPrincipalExtensions
+    using System.Security.Claims;
+    using static WebConstants;
+    public static class ClaimsPrincipalExtensions
     {
+        public static bool IsAdmin(this ClaimsPrincipal user)
+            => user.IsInRole(AdministratorRoleName);
     }
 }

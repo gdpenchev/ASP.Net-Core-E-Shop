@@ -1,9 +1,10 @@
 ﻿namespace E_Shop.Models.MasterShirt
 {
+    using E_Shop.Services.MasterShirt;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static E_Shop.Data.DataConstants.Shirt;
-    public class AddMasterShirtFormModel
+    public class MasterShirtFormModel
     {
         [Required]
         [MaxLength(MaxNameModelLength)]
@@ -19,6 +20,6 @@
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
-        public IEnumerable<MasterShirtCategoryViewModel> Categories { get; set; } = new List<MasterShirtCategoryViewModel>();
+        public IEnumerable<MasterShirtCategoryServiceModel> Categories { get; set; } = new List<MasterShirtCategoryServiceModel>();
     }
 }

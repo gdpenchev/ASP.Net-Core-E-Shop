@@ -3,6 +3,7 @@ namespace E_Shop
     using E_Shop.Data;
     using E_Shop.Data.Models;
     using E_Shop.Infrastructure;
+    using E_Shop.Services.MasterShirt;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,9 @@ namespace E_Shop
 
             services
                 .AddControllersWithViews();
+
+            services
+                .AddTransient<IMasterShirtService, MasterShirtService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
