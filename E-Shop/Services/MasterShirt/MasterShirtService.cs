@@ -128,11 +128,6 @@
 
             return newMasterShirt.Id;
         }
-        
-
-       
-
-        
 
         public bool Delete(int id)
         {

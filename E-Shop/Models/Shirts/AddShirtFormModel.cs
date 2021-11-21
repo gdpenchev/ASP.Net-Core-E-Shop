@@ -1,5 +1,6 @@
 ﻿namespace E_Shop.Models.Shirts
 {
+    using E_Shop.Services.Shirts.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants.Shirt;
@@ -15,6 +16,6 @@
 
         public int MasterShirtId { get; init; }
 
-        public IEnumerable<ShirtMasterShirtViewModel> MasterShirts { get; set; } = new List<ShirtMasterShirtViewModel>();
+        public IEnumerable<ShirtMasterShirtModel> MasterShirts { get; set; } = new List<ShirtMasterShirtModel>();
     }
 }

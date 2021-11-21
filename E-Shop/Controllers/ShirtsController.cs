@@ -1,34 +1,29 @@
 ﻿namespace E_Shop.Controllers
 {
-    using E_Shop.Data;
-    using E_Shop.Data.Models;
     using E_Shop.Models.Shirts;
+    using E_Shop.Services.Shirts;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class ShirtsController : Controller
     {
-        private readonly EShopDbContext data;
-
-        public ShirtsController(EShopDbContext data)
-        {
-            this.data = data;
-        }
-
-        
-
+        private readonly IShirtService shirtService;
        
+
+        public ShirtsController(IShirtService shirtService)
+        {
+            this.shirtService = shirtService;
+            
+        }
         public IActionResult Add() => View(new AddShirtFormModel
         {
-            MasterShirts = this.GetMasterShirts()
+            MasterShirts = this.shirtService.GetMasterShirts()
         });
 
         [HttpPost]
         public IActionResult Add(AddShirtFormModel shirt)
         {
 
-            if (!this.data.MasterShirts.Any(ms=>ms.Id == shirt.MasterShirtId))
+            if (!this.shirtService.MasterShirtExists(shirt.MasterShirtId))
             {
                 this.ModelState.AddModelError(nameof(shirt.MasterShirtId), "item does not exist.");
             }
@@ -38,36 +33,22 @@
             }
             if (!ModelState.IsValid)
             {
-                shirt.MasterShirts = this.GetMasterShirts();
+                shirt.MasterShirts = this.shirtService.GetMasterShirts();
                 return View(shirt);
             }
-            var newShirt = new Shirt
-            {
-                Price = shirt.Price,
-                Quantity = shirt.Quantity,
-                Size = shirt.Size,
-                MasterShirtId = shirt.MasterShirtId,
-            };
-            data.Shirts.Add(newShirt);
-            data.SaveChanges();
+
+            this.shirtService.Create(shirt.Quantity, shirt.Price, shirt.Size, shirt.MasterShirtId);
             return RedirectToAction("All", "MasterShirt");
         }
-        private IEnumerable<ShirtCategoryViewModel> GetShirtCategories()
-            => this.data
-            .Categories
-            .Select(c => new ShirtCategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name
-            }).ToList();
+        //private IEnumerable<ShirtCategoryViewModel> GetShirtCategories()
+        //    => this.data
+        //    .Categories
+        //    .Select(c => new ShirtCategoryViewModel
+        //    {
+        //        Id = c.Id,
+        //        Name = c.Name
+        //    }).ToList();
 
-        private IEnumerable<ShirtMasterShirtViewModel> GetMasterShirts()
-            => this.data
-            .MasterShirts
-            .Select(ms => new ShirtMasterShirtViewModel
-            {
-                Id = ms.Id,
-                Name = ms.Name
-            }).ToList();
+        
     }
 }
