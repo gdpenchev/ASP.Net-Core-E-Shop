@@ -11,10 +11,11 @@
                 <label asp-for="MasterShirt"></label>
                 <select asp-for="MasterShirt" class="form-control" onchange="this.form.submit()">
                     <option value="">All</option>
-                    @foreach (var ms in Model.MasterShirts)
+                    @foreach (var ms in Model.MasterShirtsNames)
                     {
-                        <option>@ms.Name</option>
-                     }
+                        <option>@ms</option>
+                        
+                    }
                 </select>
             </div>
         </div>

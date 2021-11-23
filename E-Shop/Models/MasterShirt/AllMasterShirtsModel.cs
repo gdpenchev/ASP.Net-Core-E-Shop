@@ -20,6 +20,8 @@ namespace E_Shop.Models.Shirts
 
         public string MasterShirt { get; init; }
 
+        public IEnumerable<string> MasterShirtsNames { get; set; }
+
         public IEnumerable<MasterShirtServiceListingModel> MasterShirts { get; set; }
 
     }

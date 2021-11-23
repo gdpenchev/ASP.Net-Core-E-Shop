@@ -1,4 +1,5 @@
 ﻿using E_Shop.Models.MasterShirt;
+using E_Shop.Models.Shirts;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ namespace E_Shop.Services.MasterShirt
 {
     public interface IMasterShirtService
     {
-        MasterShirtQueryServiceModel All(
+        AllMasterShirtsModel All(
             string category,
             string searchByText,
             string masterShirt,

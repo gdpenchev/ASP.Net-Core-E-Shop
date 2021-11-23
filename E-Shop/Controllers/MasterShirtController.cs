@@ -58,6 +58,7 @@
             query.TotalMasterShirts = queryResult.TotalMasterShirts;
             query.Categories = queryResult.Categories;
             query.MasterShirts = queryResult.MasterShirts;
+            query.MasterShirtsNames = queryResult.MasterShirtsNames;
 
 
             return View(query);

@@ -3,6 +3,7 @@
     using E_Shop.Data;
     using E_Shop.Data.Models;
     using E_Shop.Models.MasterShirt;
+    using E_Shop.Models.Shirts;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -13,7 +14,7 @@
         public MasterShirtService(EShopDbContext data) 
             => this.data = data;
 
-        public MasterShirtQueryServiceModel All(
+        public AllMasterShirtsModel All(
             string category,
             string searchByText,
             string masterShirt,
@@ -38,8 +39,8 @@
             }
             ///TODO: change the master shirt filter into something else
                 var masterShirts = shirtsListQuery
-                .Skip((currentPage - 1) * MasterShirtQueryServiceModel.MasterShirtPerPage)
-                .Take(MasterShirtQueryServiceModel.MasterShirtPerPage)
+                .Skip((currentPage - 1) * AllMasterShirtsModel.MasterShirtPerPage)
+                .Take(AllMasterShirtsModel.MasterShirtPerPage)
                 .OrderByDescending(ms => ms.Id)
                 .Select(ms => new MasterShirtServiceListingModel
                 {
@@ -57,14 +58,22 @@
                 .Distinct()
                 .ToList();
 
+            var masterShirtsNames = this.data
+                .MasterShirts
+                .Select(ms => ms.Name)
+                .OrderBy(ms => ms)
+                .Distinct()
+                .ToList();
+                
 
             var totalMasterShirts = shirtsListQuery.Count();
 
-            return new MasterShirtQueryServiceModel
+            return new AllMasterShirtsModel
             {
                 TotalMasterShirts = totalMasterShirts,
                 Categories = masterShirtsCategories,
                 MasterShirts = masterShirts,
+                MasterShirtsNames = masterShirtsNames,
                 CurrentPage = currentPage
             };
         }
