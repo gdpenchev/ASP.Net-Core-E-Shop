@@ -1,0 +1,31 @@
+﻿
+@{ 
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+    <h3>
+        <table cellpadding="2" cellspacing="2" border="1">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Qantity</th>
+                <th>Total</th>
+            </tr>
+
+            @foreach(var item in ViewBag.cart)
+            {
+                <tr>
+                    
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </table>
+    </h3>
+</body>
+</html>

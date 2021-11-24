@@ -1,7 +1,9 @@
-﻿using E_Shop.Models.MasterShirt;
+﻿using E_Shop.Models.Home;
+using E_Shop.Models.MasterShirt;
 using E_Shop.Models.Shirts;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace E_Shop.Services.MasterShirt
 {
@@ -28,5 +30,7 @@ namespace E_Shop.Services.MasterShirt
         bool CategoryExists(int id);
 
         bool NameExists(string name);
+
+        IQueryable<ShirtIndexViewModel> Latest();
     }
 }

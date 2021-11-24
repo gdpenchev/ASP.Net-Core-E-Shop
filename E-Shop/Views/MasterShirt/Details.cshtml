@@ -8,7 +8,7 @@
                 @foreach (var shirt in Model.Shirts)
                 {
                     <li class="list-group-item">For size @shirt.Size we have around @shirt.Quantity for the price of @shirt.Price</li>
-                    <a asp-route-id="@shirt.Id" class="btn btn-warning float-center">Add to cart maybe?</a>
+                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@shirt.Id" class="btn btn-warning float-center">Add to cart maybe?</a>
                 }
             </ul>
         </div>

@@ -39,6 +39,8 @@ namespace E_Shop
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<EShopDbContext>();
 
+            services.AddMemoryCache();
+
             services
                 .AddControllersWithViews();
 

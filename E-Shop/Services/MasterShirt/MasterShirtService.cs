@@ -2,6 +2,7 @@
 {
     using E_Shop.Data;
     using E_Shop.Data.Models;
+    using E_Shop.Models.Home;
     using E_Shop.Models.MasterShirt;
     using E_Shop.Models.Shirts;
     using System.Collections.Generic;
@@ -164,5 +165,17 @@
 
         public bool NameExists(string name)
         => this.data.MasterShirts.Any(ms => ms.Name == name);
+
+        public IQueryable<ShirtIndexViewModel> Latest()
+        {
+            var shirts = data.MasterShirts
+                .OrderByDescending(ms => ms.Id)
+                .Select(ms => new ShirtIndexViewModel
+                {
+                    Name = ms.Name,
+                    ImageUrl = ms.ImageURL
+                });
+            return shirts;
+        }
     }
 }
