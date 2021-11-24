@@ -8,24 +8,39 @@
     <meta name="viewport" content="width=device-width"/>
 </head>
 <body>
-    <h3>
-        <table cellpadding="2" cellspacing="2" border="1">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Qantity</th>
-                <th>Total</th>
-            </tr>
+    <h3>Cart Page </h3>
+    <table cellpadding="2" cellspacing="2" border="1">
+        <tr>
+            <th>Options</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Qantity</th>
+            <th>Total</th>
+        </tr>
 
-            @foreach(var item in ViewBag.cart)
-            {
-                <tr>
-                    
-                    <td>@item.Name</td>
-                </tr>
-            }
-        </table>
-    </h3>
+        @foreach (var item in ViewBag.cart)
+        {
+            <tr>
+                <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Id">Remove</a></td>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Size</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Price * item.Quantity)</td>
+            </tr>
+        }
+        <tr>
+            <td align="right" colspan="6"> Sum </td>
+            <td>
+                @ViewBag.total
+            </td>
+        </tr>
+    </table>
+    <br />
+    <a asp-controller="MasterShirt" asp-action="All">Continue Shopping</a>
+    <a asp-controller="Checkout" asp-action="Index" asp-route-id="">Checkout</a>
 </body>
 </html>

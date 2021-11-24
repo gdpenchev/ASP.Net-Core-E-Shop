@@ -40,6 +40,7 @@ namespace E_Shop
                 .AddEntityFrameworkStores<EShopDbContext>();
 
             services.AddMemoryCache();
+            services.AddSession();
 
             services
                 .AddControllersWithViews();
@@ -70,6 +71,7 @@ namespace E_Shop
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()
+                .UseSession() //before endpoints we need to call the session
                 .UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

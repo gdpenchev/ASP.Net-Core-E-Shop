@@ -2,6 +2,7 @@
 {
     using E_Shop.Data;
     using E_Shop.Data.Models;
+    using E_Shop.Models.Cart;
     using E_Shop.Services.SessionHelper;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
@@ -18,7 +19,7 @@
         public IActionResult Index()
         {
 
-            var cart = SessionHelper.GetObjectFromJson<List<Shirt>>(HttpContext.Session, "cart");
+            var cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
 
             ViewBag.cart = cart;
             ViewBag.total = cart.Sum(item => item.Price * item.Quantity);
@@ -27,16 +28,26 @@
 
         public IActionResult Buy(int id)
         {
-            if (SessionHelper.GetObjectFromJson<List<Shirt>>(HttpContext.Session,"cart") == null)
+            if (SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session,"cart") == null)
             {
-                List<Shirt> cart = new List<Shirt>();
+                List<CartViewModel> cart = new List<CartViewModel>();
                 var currShirt = data.Shirts.Where(s => s.Id == id).FirstOrDefault();
-                cart.Add(currShirt);
+                var currMasterShirt = data.MasterShirts.Where(ms => ms.Id == currShirt.MasterShirtId).FirstOrDefault();
+
+                var shirToCart = new CartViewModel
+                {
+                    Id = currShirt.Id,
+                    Name = currMasterShirt.Name,
+                    Price = currShirt.Price,
+                    Size = currShirt.Size,
+                    Quantity = currShirt.Quantity
+                };
+                cart.Add(shirToCart);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
             {
-                List<Shirt> cart = SessionHelper.GetObjectFromJson<List<Shirt>>(HttpContext.Session, "cart");
+                List<CartViewModel> cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
                 int index = isExist(id);
 
                 if (index != -1)
@@ -47,7 +58,17 @@
                 else
                 {
                     var currShirt = data.Shirts.Where(s => s.Id == id).FirstOrDefault();
-                    cart.Add(currShirt);
+                    var currMasterShirt = data.MasterShirts.Where(ms => ms.Id == currShirt.MasterShirtId).FirstOrDefault();
+
+                    var shirToCart = new CartViewModel
+                    {
+                        Id = currShirt.Id,
+                        Name = currMasterShirt.Name,
+                        Price = currShirt.Price,
+                        Size = currShirt.Size,
+                        Quantity = currShirt.Quantity
+                    };
+                    cart.Add(shirToCart);
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
@@ -55,17 +76,17 @@
         }
         public IActionResult Remove(int id)
         {
-            List<Shirt> cart = SessionHelper.GetObjectFromJson<List<Shirt>>(HttpContext.Session, "cart");
+            List<CartViewModel> cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
 
             int index = isExist(id);
 
-            cart.RemoveAt(id);
+            cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
         private int isExist(int id)
         {
-            List<Shirt> cart = SessionHelper.GetObjectFromJson<List<Shirt>>(HttpContext.Session, "cart");
+            List<CartViewModel> cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
 
             for (int i = 0; i < cart.Count; i++)
             {
