@@ -6,6 +6,7 @@
     using E_Shop.Models.Shirts;
     using E_Shop.Services.MasterShirt;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -64,9 +65,23 @@
             return View(query);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details([FromQuery] MasterShirtDetailsServiceModel model, int id)
         {
-            var masterShirt = this.masterShirtService.Details(id);
+            if (model.Quantity != 0 && !string.IsNullOrWhiteSpace(model.Size))
+            {
+                var toCart = new MasterShirtToCartModel
+                {
+                    Id = id,
+                    Size = model.Size,
+                    Quantity = model.Quantity
+                };
+
+                var serObj = JsonConvert.SerializeObject(toCart);
+
+                TempData["cart"] = serObj;
+                return RedirectToAction("Buy", "Cart");
+            }
+            var masterShirt = this.masterShirtService.Details(id,model.Size);
 
             if (masterShirt == null)
             {
@@ -75,6 +90,7 @@
 
             return View(masterShirt);
         }
+        
         public IActionResult Edit(int id)
         {
             var masterShirt = this.masterShirtService.Edit(id);

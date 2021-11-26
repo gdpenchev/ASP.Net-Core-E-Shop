@@ -81,19 +81,25 @@
 
         
 
-        public MasterShirtDetailsServiceModel Details(int id)
+        public MasterShirtDetailsServiceModel Details(int id, string size)
         {
             var shirts = this.data.Shirts.Where(s => s.MasterShirtId == id).ToList();
-            var masterShirt = this.data.MasterShirts.Where(ms => ms.Id == id)
+            Shirt currentShirt = null;
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                currentShirt = shirts.Where(s => s.Size == size).FirstOrDefault();
+            }
+            var masterShirtModel = this.data.MasterShirts.Where(ms => ms.Id == id)
                 .Select(ms => new MasterShirtDetailsServiceModel
                 {
                     Id = ms.Id,
                     ImageUrl = ms.ImageURL,
                     Name = ms.Name,
                     Description = ms.Description,
+                    currentShirt = currentShirt,
                     Shirts = shirts
                 }).FirstOrDefault();
-            return masterShirt;
+            return masterShirtModel;
         }
 
         public MasterShirtFormModel Edit(int id)

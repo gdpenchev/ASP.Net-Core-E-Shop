@@ -17,7 +17,7 @@ namespace E_Shop.Services.MasterShirt
 
         List<MasterShirtCategoryServiceModel> GetAllCategories();
 
-        MasterShirtDetailsServiceModel Details(int id);
+        MasterShirtDetailsServiceModel Details(int id,string size);
 
         MasterShirtFormModel Edit(int id);
 

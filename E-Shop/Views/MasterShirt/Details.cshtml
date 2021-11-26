@@ -1,20 +1,53 @@
 ﻿@model MasterShirtDetailsServiceModel
 
+
 <div class="row">
     <div class="row mb-5">
-        <div class="col-md-6">
-            <ul class="list-group">
-                <li class="list-group-item">@Model.Name</li>
-                @foreach (var shirt in Model.Shirts)
-                {
-                    <li class="list-group-item">For size @shirt.Size we have around @shirt.Quantity for the price of @shirt.Price</li>
-                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@shirt.Id" class="btn btn-warning float-center">Add to cart maybe?</a>
-                }
-            </ul>
-        </div>
+        <form method="get" class="col-md-6">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">@Model.Name</li>
+                    <li class="list-group-item">@Model.Description</li>
+
+                    <div class="form-group">
+                        <label asp-for="Size"></label>
+                        <select asp-for="Size" class="form-control" onchange="this.form.submit()">
+                            <option></option>
+                            @foreach (var item in Model.Shirts)
+                            {
+                                <option>@item.Size</option>
+                            }
+                        </select>
+                    </div>
+                    @if (Model.currentShirt != null)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Quantity"></label>
+                            <select asp-for="Quantity" class="form-control">
+                                <option></option>
+                                @for (int i = 1; i <= Model.currentShirt.Quantity; i++)
+                                {
+                                    <option>@i</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                </ul>
+            </div>
+            <button type="submit" class="btn-primary">Buy</button>
+        </form>
         <div class="col-md-6">
             <img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">
         </div>
     </div>
-
+<script>
+    $("#one").change(function () {
+        if ($(this).val() == "XXL") {
+            $("#two").show();
+        } else {
+            $("#two").hide();
+        }
+    });
+</script>
 </div>

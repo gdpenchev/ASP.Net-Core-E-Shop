@@ -16,6 +16,12 @@ namespace E_Shop.Services.MasterShirt
 
         public string Description { get; set; }
 
+        public int Quantity { get; set; }
+
+        public string Size { get; set; }
+
+        public Shirt currentShirt { get; set; }
+
         public List<Shirt> Shirts { get; set; }
     }
 }

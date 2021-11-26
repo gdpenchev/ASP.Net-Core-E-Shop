@@ -1,46 +1,58 @@
-﻿
+﻿@model CartBagViewModel
+
 @{ 
     Layout = "_Layout";
 }
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta name="viewport" content="width=device-width"/>
-</head>
-<body>
-    <h3>Cart Page </h3>
-    <table cellpadding="2" cellspacing="2" border="1">
-        <tr>
-            <th>Options</th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Size</th>
-            <th>Qantity</th>
-            <th>Total</th>
-        </tr>
+    
 
-        @foreach (var item in ViewBag.cart)
-        {
-            <tr>
-                <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Id">Remove</a></td>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Price</td>
-                <td>@item.Size</td>
-                <td>@item.Quantity</td>
-                <td>@(item.Price * item.Quantity)</td>
-            </tr>
-        }
-        <tr>
-            <td align="right" colspan="6"> Sum </td>
-            <td>
-                @ViewBag.total
-            </td>
-        </tr>
-    </table>
-    <br />
-    <a asp-controller="MasterShirt" asp-action="All">Continue Shopping</a>
-    <a asp-controller="Checkout" asp-action="Index" asp-route-id="">Checkout</a>
-</body>
-</html>
+<div class="card">
+    <div class="row">
+        <div class="col-md-8 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Shopping Cart</b></h4>
+                    </div>
+                    <div class="col align-self-center text-right text-muted">@Model.CartItems.Count</div>
+                </div>
+            </div>
+            @foreach (var shirt in Model.CartItems)
+            {
+                <div class="row border-top border-bottom">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="@shirt.ImageUrl"></div>
+                        <div class="col">
+                            <div class="row text-muted">@shirt.Category</div>
+                            <div class="row">@shirt.Name</div>
+                        </div>
+                        <div class="col">@shirt.Quantity</div>
+                        <div class="col">&euro; @shirt.Price <span class="close">&#10005;</span></div>
+                    </div>
+                </div>
+            }
+
+            <div class="back-to-shop"><a asp-controller="MasterShirt" asp-action="All">Back to shop</a></div>
+        </div>
+        <div class="col-md-4 summary">
+            <div>
+                <h5><b>Summary</b></h5>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col" style="padding-left:0;">ITEMS @Model.CartItems.Count</div>
+                <div class="col text-right">&euro; @Model.Total</div>
+            </div>
+            <form>
+                <p>SHIPPING</p> <select>
+                    <option class="text-muted">Standard-Delivery- &euro;5.00</option>
+                </select>
+                <p>GIVE CODE</p> <input id="code" placeholder="Enter your code">
+            </form>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">TOTAL PRICE</div>
+                <div class="col text-right">&euro; 137.00</div>
+            </div> <button class="btn">CHECKOUT</button>
+        </div>
+    </div>
+</div>
+
