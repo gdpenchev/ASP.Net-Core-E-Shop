@@ -35,7 +35,7 @@
 
                 </ul>
             </div>
-            <button type="submit" class="btn-primary">Buy</button>
+            <button asp-controller="Cart" asp-action="Buy" asp-route-id="@Model.Id" type="submit" class="btn-primary">Buy</button>
         </form>
         <div class="col-md-6">
             <img class="card-img-top" src="@Model.ImageUrl" alt="Card image cap">

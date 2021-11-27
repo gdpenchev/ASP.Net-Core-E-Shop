@@ -23,10 +23,31 @@
         {
             var shirtsListQuery = this.data.MasterShirts.AsQueryable();
 
+            var masterShirtsCategories = this.data
+               .MasterShirts
+               .Select(ms => ms.Category.Name)
+               .OrderBy(ms => ms)
+               .Distinct()
+               .ToList();
+
+            var masterShirtsNames = this.data
+                .MasterShirts
+                .Select(ms => ms.Name)
+                .OrderBy(ms => ms)
+                .Distinct()
+                .ToList();
+
             if (!string.IsNullOrWhiteSpace(category))
             {
                 shirtsListQuery = shirtsListQuery.Where(s =>
                 s.Category.Name == category);
+
+                masterShirtsNames = shirtsListQuery
+                    .Select(ms => ms.Name)
+                    .OrderBy(ms => ms)
+                    .Distinct()
+                    .ToList();
+
             }
             if (!string.IsNullOrWhiteSpace(searchByText))
             {
@@ -37,6 +58,12 @@
             {
                 shirtsListQuery = shirtsListQuery.Where(ms =>
                 (ms.Name == masterShirt));
+
+                masterShirtsCategories = shirtsListQuery
+                    .Select(ms => ms.Category.Name)
+                    .OrderBy(ms => ms)
+                    .Distinct()
+                    .ToList();
             }
             ///TODO: change the master shirt filter into something else
                 var masterShirts = shirtsListQuery
@@ -51,20 +78,20 @@
                     ImageUrl = ms.ImageURL,
                     Category = ms.Category.Name
                 }).ToList();
+            ///change so that when you select masterShirt or category the other filet to populate accordingly
+            //var masterShirtsCategories = this.data
+            //    .MasterShirts
+            //    .Select(ms => ms.Category.Name)
+            //    .OrderBy(ms => ms)
+            //    .Distinct()
+            //    .ToList();
 
-            var masterShirtsCategories = this.data
-                .MasterShirts
-                .Select(ms => ms.Category.Name)
-                .OrderBy(ms => ms)
-                .Distinct()
-                .ToList();
-
-            var masterShirtsNames = this.data
-                .MasterShirts
-                .Select(ms => ms.Name)
-                .OrderBy(ms => ms)
-                .Distinct()
-                .ToList();
+            //var masterShirtsNames = this.data
+            //    .MasterShirts
+            //    .Select(ms => ms.Name)
+            //    .OrderBy(ms => ms)
+            //    .Distinct()
+            //    .ToList();
                 
 
             var totalMasterShirts = shirtsListQuery.Count();
@@ -92,7 +119,7 @@
             var masterShirtModel = this.data.MasterShirts.Where(ms => ms.Id == id)
                 .Select(ms => new MasterShirtDetailsServiceModel
                 {
-                    Id = ms.Id,
+                    Id = id,
                     ImageUrl = ms.ImageURL,
                     Name = ms.Name,
                     Description = ms.Description,

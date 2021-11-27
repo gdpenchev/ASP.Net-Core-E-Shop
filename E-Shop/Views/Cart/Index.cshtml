@@ -26,7 +26,7 @@
                             <div class="row">@shirt.Name</div>
                         </div>
                         <div class="col">@shirt.Quantity</div>
-                        <div class="col">&euro; @shirt.Price <span class="close">&#10005;</span></div>
+                        <div class="col">&euro; @shirt.Price <span class="close"><a asp-controller="Cart" asp-action="Remove" asp-route-id="@shirt.Id">&#10005;</a></span></div>
                     </div>
                 </div>
             }

@@ -32,12 +32,12 @@
 
             return View(bagInfo);
         }
-        public IActionResult Buy()
+        public IActionResult Buy(MasterShirtDetailsServiceModel model, int id)
         {
 
-            var choosedItem = TempData["cart"];
+            //var choosedItem = TempData["cart"];
 
-            var model = JsonConvert.DeserializeObject<MasterShirtToCartModel>(choosedItem.ToString());
+            //var model = JsonConvert.DeserializeObject<MasterShirtToCartModel>(choosedItem.ToString());
             if (SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart") == null)
             {
                 List<CartViewModel> cart = new List<CartViewModel>();

@@ -67,20 +67,20 @@
 
         public IActionResult Details([FromQuery] MasterShirtDetailsServiceModel model, int id)
         {
-            if (model.Quantity != 0 && !string.IsNullOrWhiteSpace(model.Size))
-            {
-                var toCart = new MasterShirtToCartModel
-                {
-                    Id = id,
-                    Size = model.Size,
-                    Quantity = model.Quantity
-                };
+            //if (model.Quantity != 0 && !string.IsNullOrWhiteSpace(model.Size))
+            //{
+            //    var toCart = new MasterShirtToCartModel
+            //    {
+            //        Id = id,
+            //        Size = model.Size,
+            //        Quantity = model.Quantity
+            //    };
 
-                var serObj = JsonConvert.SerializeObject(toCart);
+            //    var serObj = JsonConvert.SerializeObject(toCart);
 
-                TempData["cart"] = serObj;
-                return RedirectToAction("Buy", "Cart");
-            }
+            //    TempData["cart"] = serObj;
+            //    return RedirectToAction("Buy", "Cart");
+            //}
             var masterShirt = this.masterShirtService.Details(id,model.Size);
 
             if (masterShirt == null)
