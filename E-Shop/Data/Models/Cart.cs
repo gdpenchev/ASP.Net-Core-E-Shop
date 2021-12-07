@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace E_Shop.Models.Cart
+namespace E_Shop.Data.Models
 {
-    public class CartViewModel
+    public class Cart
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
+
+        public int CurrentItemId { get; set; }
         public string Name { get; set; }
 
         public string Category { get; set; }
@@ -19,5 +21,9 @@ namespace E_Shop.Models.Cart
         public int Quantity { get; set; }
 
         public decimal Price { get; set; }
+
+        public int OrderId { get; set; }
+
+        public Order Order { get; set; }
     }
 }

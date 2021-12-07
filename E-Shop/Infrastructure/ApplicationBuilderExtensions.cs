@@ -71,7 +71,7 @@
                     UserName = adminEmail,
                     FullName = "Admin"
                 };
-
+                
                 await userManager.CreateAsync(user, adminPassword);
                 await userManager.AddToRoleAsync(user, role.Name);
             })

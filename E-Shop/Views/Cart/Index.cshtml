@@ -13,7 +13,7 @@
                     <div class="col">
                         <h4><b>Shopping Cart</b></h4>
                     </div>
-                    <div class="col align-self-center text-right text-muted">@Model.CartItems.Count</div>
+                    <div class="col align-self-center text-right text-muted"> @Model.CartItems.Count</div>
                 </div>
             </div>
             @foreach (var shirt in Model.CartItems)
@@ -44,14 +44,14 @@
             </div>
             <form>
                 <p>SHIPPING</p> <select>
-                    <option class="text-muted">Standard-Delivery- &euro;5.00</option>
+                    <option class="text-muted">Standard-Delivery- &euro;0.00</option>
                 </select>
                 <p>GIVE CODE</p> <input id="code" placeholder="Enter your code">
             </form>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">&euro; 137.00</div>
-            </div> <button class="btn">CHECKOUT</button>
+                <div class="col text-right">&euro; @Model.Total</div>
+            </div> <a asp-controller="Checkout" asp-action="Index" class="btn">CHECKOUT</a>
         </div>
     </div>
 </div>

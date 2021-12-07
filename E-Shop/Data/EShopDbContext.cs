@@ -18,6 +18,12 @@ namespace E_Shop.Data
 
         public DbSet<MasterShirt> MasterShirts { get; init; }
 
+        public override DbSet<User> Users { get => base.Users; set => base.Users = value; }
+
+        public DbSet<Order> Orders { get; init; }
+
+        public DbSet<Cart> Carts { get; init; }
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +38,12 @@ namespace E_Shop.Data
                 .HasOne(ms => ms.Category)
                 .WithMany(c => c.MasterShirts)
                 .HasForeignKey(ms => ms.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

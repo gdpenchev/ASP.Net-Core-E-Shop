@@ -6,6 +6,7 @@
     using E_Shop.Models.MasterShirt;
     using E_Shop.Services.MasterShirt;
     using E_Shop.Services.SessionHelper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using System.Collections.Generic;
@@ -14,25 +15,38 @@
     public class CartController : Controller
     {
         private readonly EShopDbContext data;
-
+        
         public CartController(EShopDbContext data)
         {
             this.data = data;
         }
+        [Authorize]
         public IActionResult Index()
         {
 
             var cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
 
-            var bagInfo = new CartBagViewModel
+            var bagInfo = new CartBagViewModel();
+
+            if (cart == null)
             {
-                CartItems = cart,
-                Total = cart.Sum(item => item.Price * item.Quantity)
-            };
+                var emptyCart = new List<CartViewModel>();
+                bagInfo.CartItems = emptyCart;
+                bagInfo.Total = 0;
+                
+                return View(bagInfo);
+            }
+
+            var total = cart.Sum(item => item.Price * item.Quantity);
+
+            bagInfo.CartItems = cart;
+            bagInfo.Total = total;
 
             return View(bagInfo);
         }
-        public IActionResult Buy(MasterShirtDetailsServiceModel model, int id)
+
+        [Authorize]
+        public IActionResult Buy(MasterShirtDetailsServiceModel model)
         {
 
             //var choosedItem = TempData["cart"];
@@ -90,6 +104,8 @@
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize]
         public IActionResult Remove(int id)
         {
             List<CartViewModel> cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");

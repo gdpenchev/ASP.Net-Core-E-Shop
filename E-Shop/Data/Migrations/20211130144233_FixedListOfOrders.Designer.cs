@@ -4,58 +4,22 @@ using E_Shop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace E_Shop.Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211130144233_FixedListOfOrders")]
+    partial class FixedListOfOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("E_Shop.Data.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CurrentItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Carts");
-                });
 
             modelBuilder.Entity("E_Shop.Data.Models.Category", b =>
                 {
@@ -351,17 +315,6 @@ namespace E_Shop.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("E_Shop.Data.Models.Cart", b =>
-                {
-                    b.HasOne("E_Shop.Data.Models.Order", "Order")
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("E_Shop.Data.Models.MasterShirt", b =>
                 {
                     b.HasOne("E_Shop.Data.Models.Category", "Category")
@@ -453,11 +406,6 @@ namespace E_Shop.Data.Migrations
             modelBuilder.Entity("E_Shop.Data.Models.MasterShirt", b =>
                 {
                     b.Navigation("Shirts");
-                });
-
-            modelBuilder.Entity("E_Shop.Data.Models.Order", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("E_Shop.Data.Models.User", b =>
