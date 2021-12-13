@@ -1,0 +1,24 @@
+﻿@model ListOrderModel
+
+    @foreach (var item in Model.orderModels[Model.pageNumber - 1].CartItems)
+    {
+        <div class="row">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name - @item.Category</h5>
+                    <p class="card-text">You have purchased @item.Quantity items for the price of @item.Price and with @item.Size size</p>
+                </div>
+            </div>
+        </div>
+
+    }
+
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        @for(int i = 1; i<=Model.orderModels.Count;i++)
+        {
+            <a type="button" class="btn btn-secondary" asp-controller="PreviousOrders" asp-action="GetOrders" asp-route-id="@i">@i</a>
+        }
+        
+    </div>

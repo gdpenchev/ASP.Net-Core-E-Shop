@@ -24,7 +24,8 @@
                 <select asp-for="CategoryId" multiple class="form-control">
                     @foreach (var category in Model.Categories)
                     {
-        <option value="@category.Id">@category.Name</option>            }
+                            <option value="@category.Id">@category.Name</option>            
+                    }
                     <span asp-validation-for="CategoryId" class="small text-danger"></span>
                 </select>
             </div>
