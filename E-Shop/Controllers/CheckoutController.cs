@@ -64,6 +64,36 @@ namespace E_Shop.Controllers
 
             List<CartViewModel> cart = SessionHelper.GetObjectFromJson<List<CartViewModel>>(HttpContext.Session, "cart");
 
+            var shirts = new List<Shirt>();
+
+            foreach (var item in cart)
+            {
+                var currShirt = this.data.Shirts.Where(s => s.Id == item.Id).FirstOrDefault();
+                currShirt.Quantity -= item.Quantity;
+
+                if (currShirt.Quantity == 0)
+                {
+                    this.data.Shirts.Remove(currShirt);
+                    this.data.SaveChanges();
+
+                    var remainingShirts = this.data.Shirts.Where(s => s.MasterShirtId == item.MasterShirtId).ToList();
+
+                    if (remainingShirts.Count == 0)
+                    {
+                        var currMasterShirt = this.data.MasterShirts.Where(ms => ms.Id == item.MasterShirtId).FirstOrDefault();
+                        this.data.MasterShirts.Remove(currMasterShirt);
+                        this.data.SaveChanges();
+                    }
+                    
+                }
+                else
+                {
+                    this.data.Update(currShirt);
+                    this.data.SaveChanges();
+                }
+            }
+
+
             cart.Clear();
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);

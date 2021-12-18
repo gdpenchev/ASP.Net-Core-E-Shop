@@ -34,7 +34,7 @@
                 var cartItems = this.data.Carts.Where(c => c.OrderId == order.Id).OrderBy(c => c.Id).ToList();
 
                 var currOrder = new OrderModel();
-                currOrder.orderId = i;
+                currOrder.orderId = i;  
 
                 foreach (var item in cartItems)
                 {

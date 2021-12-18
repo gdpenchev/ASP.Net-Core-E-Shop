@@ -62,6 +62,7 @@
                 var shirToCart = new CartViewModel
                 {
                     Id = currShirt.Id,
+                    MasterShirtId = currMasterShirt.Id,
                     Name = currMasterShirt.Name,
                     Category = categoryName.Name,
                     ImageUrl = currMasterShirt.ImageURL,
@@ -91,6 +92,7 @@
                     var shirToCart = new CartViewModel
                     {
                         Id = currShirt.Id,
+                        MasterShirtId = currMasterShirt.Id,
                         Name = currMasterShirt.Name,
                         Category = categoryName.Name,
                         ImageUrl = currMasterShirt.ImageURL,

@@ -8,6 +8,8 @@ namespace E_Shop.Models.Cart
     public class CartViewModel
     {
         public int Id { get; set; }
+
+        public int MasterShirtId { get; set; }
         public string Name { get; set; }
 
         public string Category { get; set; }
